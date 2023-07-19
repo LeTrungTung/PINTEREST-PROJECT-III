@@ -19,21 +19,35 @@ const UserManage = () => {
 
   const [userData, setUserData] = useState([]);
   const [count1Followed, setCount1Followed] = useState();
+  const [countFollowedOther, setCountFollowedOther] = useState();
 
-  // đếm số follow của user
-  const fetchCountFollowUser = async (id) => {
+  // đếm số followed của user
+  const fetchCountFollowUser = async () => {
     try {
-      const response = await UserAPIAdmin.countFollowed(id);
-      setCount1Followed(response.data.data[0].totalFolowed);
+      const response = await UserAPIAdmin.countFollowed();
+      setCount1Followed(response.data.data);
     } catch (error) {
       console.error("Error retrieving data: ", error);
     }
   };
   useEffect(() => {
-    fetchCountFollowUser(15);
+    fetchCountFollowUser();
   }, []);
 
-  console.log("ktra đếm follow", count1Followed);
+  // đếm số lượng user follow người khác
+  const fetchCountFollowOther = async () => {
+    try {
+      const response = await UserAPIAdmin.countFollowOther();
+      setCountFollowedOther(response.data.data);
+    } catch (error) {
+      console.error("Error retrieving data: ", error);
+    }
+  };
+  useEffect(() => {
+    fetchCountFollowOther();
+  }, []);
+
+  console.log("ktra mảng đếm follow", countFollowedOther);
 
   const fetchAllUsers = async () => {
     try {
@@ -48,8 +62,9 @@ const UserManage = () => {
   }, []);
 
   console.log("Dach sach nguoi dung", userData);
-  // const [data, setData] = useState(userData);
-  // console.log("Dach sach nguoi dung 11", data);
+  const countFLUser = userData?.map((item, index) => index);
+  console.log("List count Follow", countFLUser);
+
   const [isActive, setIsActive] = useState(true);
 
   // const fetchEditStatus = async (id, param,res) => {
@@ -139,8 +154,10 @@ const UserManage = () => {
                 </td>
                 <td>{user.email}</td>
                 {/* <td>{fetchCountFollowUser(user?.idUser)}</td> */}
-                <td>????ĐƯợc theo dõi</td>
-                <td>?Đang theo dõi</td>
+                <td>{count1Followed[index]?.NumberOfFollowers}</td>
+                <td>
+                  {countFollowedOther[index]?.NumberFollowOther}
+                </td>
                 <td>
                   {user?.role === 2 && (
                     <Button

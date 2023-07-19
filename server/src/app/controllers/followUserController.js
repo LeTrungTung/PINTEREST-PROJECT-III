@@ -111,9 +111,10 @@ class FollowUserController {
   async handleCountUserFollowed(req, res) {
     try {
       sql.query(
-        `select count(*) as totalFolowed from users
-        join follows on users.idUser=follows.userFollowedbyId
-        where users.idUser=${req.params.id}`,
+        `SELECT users.idUser, COUNT(follows.userFollowedbyId) AS NumberOfFollowers
+        FROM users
+        LEFT JOIN follows ON users.idUser = follows.userFollowedbyId
+        GROUP BY users.idUser`,
         (err, results) => {
           if (err) {
             console.error('Error handling count followed:', err);
@@ -125,6 +126,28 @@ class FollowUserController {
       );
     } catch (error) {
       console.error('Error handling count followed:', error);
+      res.status(500).json({ msg: 'Server error' });
+    }
+  }
+
+  async handleCountFollowOtherUser(req, res) {
+    try {
+      sql.query(
+        `SELECT users.idUser, COUNT(follows.userFollowOtherId) AS NumberFollowOther
+        FROM users
+        LEFT JOIN follows ON users.idUser = follows.userFollowOtherId
+        GROUP BY users.idUser`,
+        (err, results) => {
+          if (err) {
+            console.error('Error handling count follow other:', err);
+            return res.status(500).json({ msg: 'Server error' });
+          }
+
+          res.status(200).json({ data: results });
+        }
+      );
+    } catch (error) {
+      console.error('Error handling count follow other:', error);
       res.status(500).json({ msg: 'Server error' });
     }
   }
