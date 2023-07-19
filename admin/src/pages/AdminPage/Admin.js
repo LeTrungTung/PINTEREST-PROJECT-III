@@ -4,10 +4,43 @@ import { IoIosArrowDown } from "react-icons/io";
 import "./Admin.css";
 import UserManage from "../../Components/manageUser/UserManage";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useRef } from "react";
+import { useEffect } from "react";
 
 const Admin = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const menuRef = useRef();
+  const adminLogin =
+    JSON.parse(localStorage.getItem("adminLogin")) || [];
+  const handleArrowClick = () => {
+    setIsMenuOpen((prevIsMenuOpen) => !prevIsMenuOpen);
+  };
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      window.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
+  const handleRenameUser = () => {};
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("adminLogin");
+    window.location.href = "/";
+  };
   return (
     <div id="wrap-admin">
       <div id="header-admin">
@@ -34,8 +67,52 @@ const Admin = () => {
         <div id="header-admin-left">
           <div id="sec-right">
             <img src="https://i.pinimg.com/236x/8b/16/7a/8b167af653c2399dd93b952a48740620.jpg" />
-            <IoIosArrowDown id="icon-admin" />
+            {/* <IoIosArrowDown id="icon-admin" /> */}
+            <div className="wrap-avata-hover1">
+              <IoIosArrowDown
+                // id="arrow-avatar1"
+                id="icon-admin"
+                onClick={handleArrowClick}
+                className={isMenuOpen ? "open" : ""}
+              />
+              <div className="view-hover-avatar">
+                <span>Chi tiết tài khoản</span>
+              </div>
+              {isMenuOpen && (
+                <div className="menu-dropdown" ref={menuRef}>
+                  <span className="profile-logout1">
+                    Đang đăng nhập
+                  </span>
+                  <div className="row-avataemail-name1 hoverto">
+                    <img
+                      src="https://cdn.onlinewebfonts.com/svg/img_542942.png"
+                      alt="avata"
+                      className="avata-of"
+                    />
+                    <div className="email-name1">
+                      <span>{adminLogin?.username}</span>
+                      <span>{adminLogin?.email}</span>
+                    </div>
+                  </div>
+                  <span
+                    className="profile-logout hoverto"
+                    onClick={handleRenameUser}
+                  >
+                    Đổi tên tài khoản
+                  </span>
+
+                  <span
+                    className="profile-logout hoverto"
+                    onClick={handleLogout}
+                  >
+                    Đăng xuất
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
+          {/* fjkkldfjglkdf */}
+          {/*  */}
         </div>
       </div>
       <div className="content-body">

@@ -32,6 +32,10 @@
   height: 40px;
   border-radius: 50%;
 }
+#sec-right {
+  display: flex;
+  column-gap: 15px;
+}
 #search-admin {
   width: 500px;
   background-color: #e1e1e1;
@@ -75,4 +79,134 @@
   color: #7c829a;
   border-bottom: 5px solid #fff;
   background-color: #ececec;
+}
+
+/* nut ben phai */
+#arrow-avatar {
+  box-sizing: content-box;
+  padding: 5px;
+  font-weight: 800;
+  font-size: 20px;
+  color: rgb(190, 131, 54);
+}
+#arrow-avatar:hover {
+  background-color: #e1e1e1;
+  cursor: pointer;
+  border: none;
+  border-radius: 50%;
+}
+#btn-mainpage {
+  padding: 12px;
+  background-color: rgb(24, 225, 24);
+  color: white;
+  border-radius: 40px;
+  font-weight: 600;
+  transition: 0.2s;
+  border: none;
+}
+#right-header1 {
+  display: flex;
+  gap: 5px;
+  justify-content: space-around;
+  align-items: center;
+}
+#btn-create {
+  border: none;
+  background-color: white;
+  font-weight: 600;
+  color: rgb(132, 100, 18);
+}
+
+/* csss menu tại nút mũi tên bên phải */
+.menu-dropdown {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 45px;
+  right: -1px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  /* padding-left: 20px; */
+  color: black;
+  width: 350px;
+  padding: 10px;
+  border-radius: 10px;
+}
+.hoverto:hover {
+  border: 3px solid rgb(195, 171, 171);
+  background-color: whitesmoke;
+  transition: opacity 0.3s ease;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.open .menu-dropdown {
+  display: block;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.menu-item {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.menu-item.hover {
+  background-color: lightgray;
+}
+.profile-logout {
+  text-align: left;
+  padding: 15px;
+  font-weight: 500;
+}
+.profile-logout1 {
+  text-align: left;
+  padding: 15px;
+  border-bottom: 1px solid #ccc;
+}
+.email-name1 {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+.email-name1 :nth-child(1) {
+  font-weight: 600;
+}
+.email-name1 :nth-child(2) {
+  font-weight: 200;
+}
+.row-avataemail-name1 {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  padding: 8px;
+}
+
+.view-hover-avatar {
+  background-color: black;
+  color: white;
+  font-size: 0.75em;
+  padding: 3px 5px;
+  border: none;
+  border-radius: 8px;
+  position: absolute;
+  top: 50px;
+  left: -50px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.wrap-avata-hover1 {
+  position: relative;
+}
+
+.wrap-avata-hover:hover .view-hover-avatar {
+  visibility: visible;
+  opacity: 1;
+}
+.avata-of {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
 }
