@@ -106,6 +106,28 @@ class FollowUserController {
       res.status(200).json({ msg: 'Thêm mới Follow thành công' });
     });
   }
+
+  // đếm số users được theo dõi bởi người khác
+  async handleCountUserFollowed(req, res) {
+    try {
+      sql.query(
+        `select count(*) as totalFolowed from users
+        join follows on users.idUser=follows.userFollowedbyId
+        where users.idUser=${req.params.id}`,
+        (err, results) => {
+          if (err) {
+            console.error('Error handling count followed:', err);
+            return res.status(500).json({ msg: 'Server error' });
+          }
+
+          res.status(200).json({ data: results });
+        }
+      );
+    } catch (error) {
+      console.error('Error handling count followed:', error);
+      res.status(500).json({ msg: 'Server error' });
+    }
+  }
 }
 
 module.exports = new FollowUserController();

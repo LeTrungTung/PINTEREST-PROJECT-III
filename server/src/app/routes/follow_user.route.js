@@ -7,6 +7,7 @@ router.get('/get-userbyid-followed/:id', FollowUserController.handleGetUserFollo
 router.get('/get-userbyid-follow-other/:id', FollowUserController.handleGetUserFollowOther);
 router.delete('/delete-follow-byid/:id', FollowUserController.handleDeleteFollowOther);
 router.post('/add-follow-other', FollowUserController.handlelPostFollowOther);
+router.get('/count-user-followed/:id', FollowUserController.handleCountUserFollowed);
 
 router.get('/', (req, res) => {
   res.json('Follows Ok');

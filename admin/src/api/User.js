@@ -26,4 +26,8 @@ export class UserAPIAdmin {
     const url = `api/v1/user/edit-status/${id}`;
     return axiosClient.patch(url, param);
   }
+  static countFollowed(id) {
+    const url = `api/v1/follow/count-user-followed/${id}`;
+    return axiosClient.get(url);
+  }
 }

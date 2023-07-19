@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const sceretKey = require('../../configs/jwt.config');
 const bcrypt = require('bcryptjs');
 const sql = require('../../libs/database/db');
+const sendRegistrationEmail = require('./mail.controller');
 
 class UserController {
   handleRegister(req, res) {
@@ -45,6 +46,7 @@ class UserController {
               }
 
               res.status(200).json({ msg: 'Register Successfully' });
+              sendRegistrationEmail(email);
             }
           );
         });

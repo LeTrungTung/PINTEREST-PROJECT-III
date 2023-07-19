@@ -18,8 +18,23 @@ const UserManage = () => {
   // console.log("Dach sach nguoi dung", userData);
 
   const [userData, setUserData] = useState([]);
+  const [count1Followed, setCount1Followed] = useState();
 
-  // gọi dữ liệu bảng images_saved_user
+  // đếm số follow của user
+  const fetchCountFollowUser = async (id) => {
+    try {
+      const response = await UserAPIAdmin.countFollowed(id);
+      setCount1Followed(response.data.data[0].totalFolowed);
+    } catch (error) {
+      console.error("Error retrieving data: ", error);
+    }
+  };
+  useEffect(() => {
+    fetchCountFollowUser(15);
+  }, []);
+
+  console.log("ktra đếm follow", count1Followed);
+
   const fetchAllUsers = async () => {
     try {
       const response = await UserAPIAdmin.getUsers();
@@ -31,9 +46,10 @@ const UserManage = () => {
   useEffect(() => {
     fetchAllUsers();
   }, []);
+
   console.log("Dach sach nguoi dung", userData);
-  const [data, setData] = useState(userData);
-  console.log("Dach sach nguoi dung 11", data);
+  // const [data, setData] = useState(userData);
+  // console.log("Dach sach nguoi dung 11", data);
   const [isActive, setIsActive] = useState(true);
 
   // const fetchEditStatus = async (id, param,res) => {
@@ -122,7 +138,8 @@ const UserManage = () => {
                   {/* <img src={user.avatarUser} alt="Avatar" /> */}
                 </td>
                 <td>{user.email}</td>
-                <td>??người theo dõi</td>
+                {/* <td>{fetchCountFollowUser(user?.idUser)}</td> */}
+                <td>????ĐƯợc theo dõi</td>
                 <td>?Đang theo dõi</td>
                 <td>
                   {user?.role === 2 && (
