@@ -9,14 +9,17 @@ import PendingIcon from "@mui/icons-material/Pending";
 import { useNavigate } from "react-router-dom";
 // import { useSelector } from "react-redux";
 import "./CRUDImage.css";
+import { ImageAPIAdmin } from "../../api/Image";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
+import { useState } from "react";
 
 function CRUDImage() {
   // const dataImage = useSelector((state) => state.infoimage) || [];
-  console.log("dữ liệu ảnh", dataImage);
-
+  // console.log("dữ liệu ảnh", dataImage);
+  const [listImage, setListImage] = useState([]);
   const navigate = useNavigate();
   const [hoveredItem, setHoveredItem] = React.useState(null);
 
@@ -30,14 +33,27 @@ function CRUDImage() {
     navigate(`/cruddetail/${id}`);
   };
 
+  const fetchAllImage = async () => {
+    try {
+      const response = await ImageAPIAdmin.getAllImages();
+      setListImage(response.data.data);
+    } catch (error) {
+      console.error("Error retrieving data: ", error);
+    }
+  };
+  useEffect(() => {
+    fetchAllImage();
+  }, []);
+  console.log("ktra list ảnh", listImage);
+
   return (
     <Container id="wrap-cards">
       <Box sx={{ width: 1200, height: 450 }}>
         <ImageList variant="masonry" cols={5} gap={10}>
-          {dataImage &&
-            dataImage.map((item) => (
+          {listImage &&
+            listImage?.map((item) => (
               <ImageListItem
-                key={item.id}
+                key={item}
                 className="cl-image"
                 onMouseEnter={() => handleMouseEnter(item.id)}
                 onMouseLeave={handleMouseLeave}
@@ -51,21 +67,21 @@ function CRUDImage() {
                 }}
               >
                 <img
-                  src={`${item.urlImage}?w=248&fit=crop&auto=format`}
-                  srcSet={`${item.urlImage}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                  alt={item.title}
+                  src={`${item.linkImage}?w=248&fit=crop&auto=format`}
+                  srcSet={`${item.linkImage}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                  alt={item.titleImage}
                   loading="lazy"
-                  id={item.id}
-                  onClick={() => handleViewImage(item.id)}
+                  id={item.idImage}
+                  onClick={() => handleViewImage(item.idImage)}
                 />
-                {hoveredItem === item.id && (
+                {hoveredItem === item.idImage && (
                   <ImageListItemBar
-                    title={item.title}
-                    subtitle={item.author}
+                    title={item.titleImage}
+                    subtitle={item.sourceImage}
                     actionIcon={
                       <IconButton
                         sx={{ color: "white" }}
-                        aria-label={`info about ${item.title}`}
+                        aria-label={`info about ${item.titleImage}`}
                       >
                         <PendingIcon sx={{ fontSize: 30 }} />
                       </IconButton>
