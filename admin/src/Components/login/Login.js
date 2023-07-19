@@ -1,8 +1,9 @@
+import axios from "axios";
 import React, { useState } from "react";
 import "./Login.css";
 import { NavLink, useNavigate } from "react-router-dom";
 // import { useDispatch } from "react-redux";
-import { login } from "../../store/userSlice";
+// import { login } from "../../store/userSlice";
 
 const Login = () => {
   const [username, setUserName] = useState("");
@@ -10,6 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [repassword, setRepassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate(); // Sử dụng hook useNavigate
   // const dipatch = useDispatch();
   const handleSubmit = async (e) => {
@@ -28,6 +30,38 @@ const Login = () => {
     if (password.trim() === "") {
       errors.password = "Vui lòng nhập mật khẩu!";
     }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/v1/admin/login",
+        {
+          email,
+          password,
+        }
+      );
+
+      const { success, accessToken, role } = response.data;
+      console.log(111, response.data);
+      if (response.data.data.role == 1) {
+        // Lưu accessToken vào localStorage
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem(
+          "adminLogin",
+          JSON.stringify(response.data.data)
+        );
+
+        // Chuyển hướng đến trang admin
+        navigate("/admin");
+      } else {
+        setErrorMessage("Invalid credentials");
+      }
+    } catch (error) {
+      console.error("Error logging in:", error);
+      setErrorMessage(
+        "Something went wrong. Please try again later."
+      );
+    }
+
     // if (password !== "" && email !== "") {
     //   const data = await dipatch(login({ email, password })).unwrap();
 
@@ -62,7 +96,7 @@ const Login = () => {
         />
       </div>
       <form className="login-form" onSubmit={handleSubmit}>
-        <h2 className="title-login"> Chào mừng bạn đến</h2>
+        <h2 className="title-login"> Xin chào Admin!</h2>
         <h1 className="title1-login">Pinterest</h1>
         <input
           type="text"
@@ -82,10 +116,6 @@ const Login = () => {
         )}
 
         <button type="submit">Đăng nhập</button>
-        <p className="note-login">
-          Nếu bạn chưa có tài khoản?{" "}
-          <NavLink to={"/register"}>Đăng ký tại đây</NavLink>
-        </p>
       </form>
     </div>
   );

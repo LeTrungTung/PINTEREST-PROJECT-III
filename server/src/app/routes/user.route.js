@@ -9,6 +9,7 @@ router.post('/register', UserController.handleRegister);
 router.get('/get-user', UserController.handleGetUser);
 router.patch('/edit-user/:id', UserController.handleEditUser);
 router.get('/get-user-byid/:id', UserController.handleGetUserById);
+router.patch('/edit-status/:id', UserController.handleEditStatusUser);
 
 router.get('/', (req, res) => {
   res.json('Ok');

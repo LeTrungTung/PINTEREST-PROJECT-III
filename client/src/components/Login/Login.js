@@ -30,7 +30,7 @@ const Login = () => {
     }
     if (password !== "" && email !== "") {
       const data = await dipatch(login({ email, password })).unwrap();
-
+      console.log("kiẻm tra Đăng nhập", data);
       if (
         password !== "" &&
         email !== "" &&
@@ -38,9 +38,11 @@ const Login = () => {
       ) {
         errors.password = "Mật khẩu và password không khớp!";
       }
-
+      if (data?.data?.data?.status === 0) {
+        errors.password = "Tài khoản của bạn đã bị khoá!";
+      }
       console.log(data);
-      if (data?.data?.accessToken) {
+      if (data?.data?.accessToken && data?.data?.data?.status === 1) {
         navigate("/home");
       }
     }

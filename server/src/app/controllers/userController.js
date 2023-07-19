@@ -134,6 +134,21 @@ class UserController {
       res.status(200).json({ data: results });
     });
   }
+
+  async handleEditStatusUser(req, res) {
+    console.log('Ktra body', req.params.id);
+    const status = req.body.status;
+    let query = `UPDATE users SET status=? WHERE idUser=${req.params.id}`;
+
+    sql.query(query, [status], (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ msg: err });
+        return;
+      }
+      res.status(200).json({ msg: 'Sửa status thành công' });
+    });
+  }
 }
 
 module.exports = new UserController();

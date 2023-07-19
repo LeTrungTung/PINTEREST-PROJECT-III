@@ -1,9 +1,11 @@
 const mysql = require('../../libs/database/db');
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
+const sceretKey = require('../../configs/jwt.config');
+const bcrypt = require('bcryptjs');
+// require('dotenv').config();
 
-const secretKey = process.env.SECRET_KEY; // Thêm dòng này
+// const secretKey = process.env.SECRET_KEY; // Thêm dòng này
 
 class AdminController {
   async loginAdmin(req, res) {
@@ -11,7 +13,8 @@ class AdminController {
 
     try {
       // Kiểm tra thông tin đăng nhập admin trong bảng user
-      const query = `SELECT * FROM users WHERE username = ? AND role = 1`;
+      // const query = `SELECT * FROM users WHERE email = ?`;
+      const query = `SELECT * FROM users WHERE email = ? AND role = 1`;
       mysql.query(query, [email], async (err, results) => {
         if (err) {
           console.error('Error handling admin login:', err);
@@ -27,11 +30,12 @@ class AdminController {
 
             if (isPasswordMatch) {
               // Tạo mã thông báo truy cập cho admin
-              const accessToken = jwt.sign({ adminId: admin.idUser }, secretKey);
+              const accessToken = jwt.sign({ adminId: admin.idUser }, sceretKey);
 
               return res.status(200).json({
                 message: 'Admin login successful',
                 accessToken,
+                data: admin,
               });
             } else {
               return res.status(401).json({ message: 'Invalid password' });
