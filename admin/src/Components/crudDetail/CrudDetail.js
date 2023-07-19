@@ -9,57 +9,59 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-// import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import CommentAPI from "../../api/Comment";
 import { ClassNames } from "@emotion/react";
-import DocumentAPI from "../../api/Document";
 import "./CrudDetail.css";
-import {
-  handleCallImageAPI,
-  handleDeleteImageAPI,
-  handleEditImageAPI,
-} from "../../redux/reducer/InfoImageSilce";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ImageAPIAdmin } from "../../api/Image";
 
 const CrudDetail = () => {
   const navigate = useNavigate();
   const paramsId = useParams();
   const numberId = Number(paramsId.id);
-  const [imageViewDetail, setImageViewDetail] = useState();
+  // const [imageViewDetail, setImageViewDetail] = useState();
   // set trạng thái của Buton "Lưu thay đổi" active/inactive
+
+  const [imageChoice, setImageChoice] = useState([]);
   const [isEditActive, setIsEditActive] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false); // Trạng thái hiển thị modal xóa
-  // const imageList = useSelector((state) => state.infoimage) || [];
-  console.log("imgList", imageList);
 
-  //  Gọi dữ liệu comment từ redux về
+  // gọi dữ liệu API lấy image by Id
+  const fetchImageById = async (id) => {
+    try {
+      const response = await ImageAPIAdmin.getImageById(id);
+      setImageChoice(response.data.data);
+    } catch (error) {
+      console.error("Error retrieving data: ", error);
+    }
+  };
   useEffect(() => {
-    const imageViewDetail1 = imageList.find(
-      (image) => image.id === numberId
-    );
-    setImageViewDetail(imageViewDetail1);
+    fetchImageById(numberId);
   }, []);
-  console.log(imageViewDetail);
 
-  const userLogin = JSON.parse(localStorage.getItem("user")) || [];
+  console.log("Image đang chọn====>", imageChoice);
+
+  const adminLogin =
+    JSON.parse(localStorage.getItem("adminLogin")) || [];
   // console.log("login", userLogin);
-  // const dispatch = useDispatch();
-  // const documentList = useSelector((state) => state.documents);
-  // console.log("listDC", documentList);
 
   const [formEdit, setFormEdit] = useState({
-    title: "",
-    author: "",
+    userCreateId: "",
+    categoryImage: "",
+    titleImage: "",
+    sourceImage: "",
     description: "",
   });
 
   const handleEditImage = () => {
     setFormEdit({
-      title: imageViewDetail?.title,
-      author: imageViewDetail?.author,
-      description: imageViewDetail?.description,
+      userCreateId: imageChoice[0]?.userCreateId,
+      categoryImage: imageChoice[0]?.categoryImage,
+      titleImage: imageChoice[0]?.titleImage,
+      sourceImage: imageChoice[0]?.sourceImage,
+      description: imageChoice[0]?.description,
     });
     setIsEditActive(true);
   };
@@ -76,7 +78,7 @@ const CrudDetail = () => {
     // Handle saving changes logic here
     console.log("formedit", formEdit);
     // đè dữ liệu của object mới vào object cũ tại id tương ứng
-    const updateData = { ...imageViewDetail, ...formEdit };
+    const updateData = { ...imageChoice[0], ...formEdit };
     console.log("upData", updateData);
 
     // await dispatch(handleEditImageAPI(updateData)).unwrap();
@@ -95,8 +97,10 @@ const CrudDetail = () => {
 
     // Reset formEdit to empty values
     setFormEdit({
-      title: "",
-      author: "",
+      userCreateId: "",
+      categoryImage: "",
+      titleImage: "",
+      sourceImage: "",
       description: "",
     });
     setIsEditActive(false);
@@ -122,7 +126,7 @@ const CrudDetail = () => {
   return (
     <Container id="wrap-detail">
       <div id="left-area">
-        <img src={imageViewDetail?.urlImage} alt="" id="img-detail" />
+        <img src={imageChoice[0]?.linkImage} alt="" id="img-detail" />
       </div>
       <div id="right-area">
         <div id="right-area-top">
@@ -141,12 +145,12 @@ const CrudDetail = () => {
               </Button>
             </div>
           </div>
-          <h4>Tiêu đề ảnh: {imageViewDetail?.title}</h4>
+          <h4>Tiêu đề ảnh: {imageChoice[0]?.titleImage}</h4>
           <p>
             <span>Nguồn gốc trang: </span>
-            <u>{imageViewDetail?.author}</u>
+            <u>{imageChoice[0]?.sourceImage}</u>
           </p>
-          <p>Mô tả ảnh: {imageViewDetail?.description}</p>
+          <p>Mô tả ảnh: {imageChoice[0]?.description}</p>
           <br />
           <div id="forrm-edit">
             <h5 style={{ textAlign: "center" }}>
@@ -160,9 +164,9 @@ const CrudDetail = () => {
                 <Form.Label>Tiêu đề ảnh</Form.Label>
                 <Form.Control
                   type="text"
-                  name="title"
+                  name="titleImage"
                   placeholder="Tiêu đề ảnh"
-                  value={formEdit.title}
+                  value={formEdit.titleImage}
                   onChange={handleFormChange}
                 />
               </Form.Group>
@@ -174,9 +178,9 @@ const CrudDetail = () => {
                 <Form.Label>Nguồn gốc trang</Form.Label>
                 <Form.Control
                   type="text"
-                  name="author"
+                  name="sourceImage"
                   placeholder="Nguồn gốc trang"
-                  value={formEdit.author}
+                  value={formEdit.sourceImage}
                   onChange={handleFormChange}
                 />
               </Form.Group>

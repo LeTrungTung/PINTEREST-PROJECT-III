@@ -61,23 +61,6 @@ const Login = () => {
         "Something went wrong. Please try again later."
       );
     }
-
-    // if (password !== "" && email !== "") {
-    //   const data = await dipatch(login({ email, password })).unwrap();
-
-    //   if (
-    //     password !== "" &&
-    //     email !== "" &&
-    //     data?.data?.accessToken == null
-    //   ) {
-    //     errors.password = "Mật khẩu và password không khớp!";
-    //   }
-
-    //   console.log(data);
-    //   if (data?.data?.accessToken) {
-    //     navigate("/home");
-    //   }
-    // }
     setErrors(errors);
   };
 

@@ -18,7 +18,7 @@
 }
 #header-admin-left {
   display: flex;
-  gap: 50px;
+  gap: 40px;
   justify-content: space-between;
   cursor: pointer;
 }
@@ -28,14 +28,15 @@
   object-fit: contain;
 }
 #sec-right img {
-  width: 40px;
-  height: 40px;
+  width: 30px !important;
+  height: 30px !important;
   border-radius: 50%;
 }
 #sec-right {
   display: flex;
-  column-gap: 15px;
+  column-gap: 10px;
 }
+
 #search-admin {
   width: 500px;
   background-color: #e1e1e1;

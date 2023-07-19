@@ -1,0 +1,13 @@
+.wrap-auth {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+/* .body-content {
+  flex-grow: 1;
+  display: flex;
+} */
+
+.bodyImage {
+  margin-top: 0;
+}

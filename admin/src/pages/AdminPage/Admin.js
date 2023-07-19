@@ -66,8 +66,7 @@ const Admin = () => {
         </div>
         <div id="header-admin-left">
           <div id="sec-right">
-            <img src="https://i.pinimg.com/236x/8b/16/7a/8b167af653c2399dd93b952a48740620.jpg" />
-            {/* <IoIosArrowDown id="icon-admin" /> */}
+            <img src={adminLogin?.avatarUser} />
             <div className="wrap-avata-hover1">
               <IoIosArrowDown
                 // id="arrow-avatar1"
@@ -85,7 +84,7 @@ const Admin = () => {
                   </span>
                   <div className="row-avataemail-name1 hoverto">
                     <img
-                      src="https://cdn.onlinewebfonts.com/svg/img_542942.png"
+                      src={adminLogin?.avatarUser}
                       alt="avata"
                       className="avata-of"
                     />
