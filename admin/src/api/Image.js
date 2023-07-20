@@ -9,4 +9,8 @@ export class ImageAPIAdmin {
     const url = `/api/v1/image/get-image-byId/${id}`;
     return axiosClient.get(url);
   }
+  static editImagebyId(id, param) {
+    const url = `api/v1/image/edit-image-id/${id}`;
+    return axiosClient.patch(url, param);
+  }
 }

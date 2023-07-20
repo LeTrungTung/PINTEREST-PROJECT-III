@@ -73,6 +73,34 @@ const CrudDetail = () => {
     });
   };
 
+  const EditImagebyId = async (id, param) => {
+    try {
+      const response = await ImageAPIAdmin.editImagebyId(id, param);
+      // setListImage(response.data.data);
+    } catch (error) {
+      console.error("Error retrieving data: ", error);
+    }
+  };
+  // useEffect(() => {
+  //   EditImagebyId(numberId,);
+  // }, []);
+
+  // ljdkfjksdlflsd
+  // const dataFromPost = dataForm;
+
+  // const newUsername = {
+  //   username: dataFromPost.username,
+  // };
+  // const id = userLogin?.idUser;
+  // console.log("idusserlogin", id);
+  // try {
+  //   await UserAPI.editUsername(id, newUsername);
+  // } catch (error) {
+  //   console.error("Error retrieving data: ", error);
+  // }
+
+  // ljdkfjksdlflsd
+
   const handleSaveChanges = async (e) => {
     e.preventDefault();
     // Handle saving changes logic here
@@ -82,6 +110,9 @@ const CrudDetail = () => {
     console.log("upData", updateData);
 
     // await dispatch(handleEditImageAPI(updateData)).unwrap();
+
+    await EditImagebyId(numberId, updateData);
+
     toast.success("Hiệu chỉnh hoàn thành!", {
       onClose: () => {
         setTimeout(() => {

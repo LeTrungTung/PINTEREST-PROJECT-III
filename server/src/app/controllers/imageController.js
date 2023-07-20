@@ -255,6 +255,56 @@ class ImageController {
       }
     );
   }
+
+  async handleEditImagebyId(req, res) {
+    console.log('Ktra body', req.params.id);
+    // const status = req.body.status;
+    const newImage = {
+      userCreateId: req.body.userCreateId,
+      linkImage: req.body.linkImage,
+      categoryImage: req.body.categoryImage,
+      titleImage: req.body.titleImage,
+      description: req.body.description,
+      sourceImage: req.body.sourceImage,
+    };
+    let query = `UPDATE images
+    SET userCreateId = ?, linkImage = ?, categoryImage=?, titleImage=?,description=?,sourceImage=?
+    WHERE idImage=${req.params.id}`;
+
+    sql.query(
+      query,
+      [
+        newImage.userCreateId,
+        newImage.linkImage,
+        newImage.categoryImage,
+        newImage.titleImage,
+        newImage.description,
+        newImage.sourceImage,
+      ],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+          res.status(500).json({ msg: err });
+          return;
+        }
+        res.status(200).json({ msg: 'Sửa ảnh thành công' });
+      }
+    );
+  }
+
+  DeleteImageById11(req, res) {
+    const id1 = Number(req.params.id);
+
+    const deleteImage = `DELETE FROM images WHERE idImage = ?`;
+    sql.query(deleteImage, [id1], (err, result) => {
+      if (err) {
+        console.log('loi roi', err);
+        res.status(500).json({ msg: 'Loi server' });
+        return;
+      }
+      res.status(200).json({ message: 'Task deleted successfully' });
+    });
+  }
 }
 
 module.exports = new ImageController();

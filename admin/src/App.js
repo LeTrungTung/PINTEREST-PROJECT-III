@@ -13,13 +13,20 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        {/* <Route element={<RequiredAuth />}> */}
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/images" element={<ImageManage />} />
-        <Route
-          path="/cruddetail/:id"
-          element={<Admin_Detail_Layout children={<CrudDetail />} />}
-        />
+        <Route element={<RequiredAuth />}>
+          <Route path="/admin" element={<Admin />} />
+        </Route>
+        <Route element={<RequiredAuth />}>
+          <Route path="/images" element={<ImageManage />} />
+        </Route>
+        <Route element={<RequiredAuth />}>
+          <Route
+            path="/cruddetail/:id"
+            element={
+              <Admin_Detail_Layout children={<CrudDetail />} />
+            }
+          />
+        </Route>
         {/* </Route> */}
 
         {/* <Route path="/admin" element={<Admin />} /> */}
